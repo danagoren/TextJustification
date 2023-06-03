@@ -1,0 +1,67 @@
+public class Solution {
+    public IList<string> FullJustify(string[] words, int maxWidth) {
+        int i = 0; int n = words.Length;
+        String currentLine = new String("");
+        IList<string> answer = new List<string>();
+        int count = 0; int length = 0;
+        while (i<n){
+            currentLine = "";
+            length = words[i].Length;
+            count = 1;
+            int x = i;
+            while (length<maxWidth){
+                if (x+1<n && length + words[x+1].Length + (x-i+1) <= maxWidth){
+                    x++; count++; length+= words[x].Length; 
+                }
+                else {break;}
+            }
+            if (x+1>=n){
+                while (i<n){
+                    currentLine += words[i];
+                    if (currentLine.Length < maxWidth){
+                        currentLine += " ";
+                    }
+                    i++;
+                }
+                while (currentLine.Length < maxWidth){
+                    currentLine += " ";
+                }
+                answer.Add(currentLine); return answer;
+            }
+            int spaces = maxWidth - length;
+            int evenSpaces; int extraSpaces;
+            if (count>1){
+                extraSpaces = spaces%(count-1);
+                evenSpaces = spaces/(count-1);// - extraSpaces;
+            }
+            else{
+                evenSpaces = spaces;
+                extraSpaces = 0;
+            }
+            while (count>1){
+                currentLine += words[i];
+                int z = evenSpaces;
+                while (z>0){
+                    currentLine += " ";
+                    z--;
+                }
+                if (extraSpaces>0){
+                    currentLine += " ";
+                    extraSpaces--;
+                }
+                count--;
+                i++;
+            }
+            currentLine += words[i];
+            if (currentLine.Length == words[i].Length){
+                while (spaces > 0){
+                    currentLine += " ";
+                    spaces--;
+                }
+            }
+            answer.Add(currentLine);
+            i++;
+        }
+        return answer;
+    }
+}
